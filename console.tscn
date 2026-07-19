@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://d26jtajgln6i8"]
+
+[ext_resource type="Script" uid="uid://dwpai221rol3n" path="res://console.gd" id="1_lu137"]
+[ext_resource type="FontFile" uid="uid://cg7ebgiquyk0c" path="res://fonts/karu-extralight.ttf" id="2_buh4c"]
+
+[node name="Console" type="CanvasLayer" unique_id=1430836446]
+script = ExtResource("1_lu137")
+
+[node name="Panel" type="Panel" parent="." unique_id=1659887]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="InputLine" type="LineEdit" parent="Panel" unique_id=1137913343]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -40.0
+offset_right = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_buh4c")
+placeholder_text = "Press \"/\" to type"
+
+[node name="OutputLog" type="RichTextLabel" parent="Panel" unique_id=1851885431]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -178.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("2_buh4c")
+bbcode_enabled = true
+
+[node name="ProgramPanel" type="Panel" parent="Panel" unique_id=1594318105]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 3.0
+offset_top = -641.0
+offset_right = 3.0
+offset_bottom = -521.0
+grow_horizontal = 2
+
+[node name="ProgramLabel" type="RichTextLabel" parent="Panel/ProgramPanel" unique_id=1402029179]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+bbcode_enabled = true
+
+[node name="RestartButton" type="Button" parent="." unique_id=1404789633]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -95.0
+offset_top = 147.0
+offset_right = -16.0
+offset_bottom = 178.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_buh4c")
+text = "↺ restart"
+
+[node name="MallocLabel" type="Label" parent="." unique_id=1850689050]
+offset_left = 1068.0
+offset_top = 195.0
+offset_right = 1108.0
+offset_bottom = 218.0
+
+[connection signal="text_submitted" from="Panel/InputLine" to="." method="_on_input_line_text_submitted"]
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]

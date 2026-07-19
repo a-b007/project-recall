@@ -1,0 +1,76 @@
+[gd_scene format=3 uid="uid://dnxbi6d4i3x61"]
+
+[ext_resource type="Script" uid="uid://da6t50i4j7hq0" path="res://lore_room.gd" id="1_le6qt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l2d2h"]
+size = Vector3(8, 4, 1)
+
+[node name="lore_room" type="Node3D" unique_id=1133147897]
+script = ExtResource("1_le6qt")
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=1803694905]
+use_collision = true
+size = Vector3(8, 0.2, 8)
+
+[node name="WallRight" type="CSGBox3D" parent="." unique_id=959914597]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 2, 0)
+use_collision = true
+size = Vector3(8, 4, 0.2)
+
+[node name="WallBack" type="CSGBox3D" parent="." unique_id=494066898]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -4)
+use_collision = true
+size = Vector3(8, 4, 0.2)
+
+[node name="WallFront" type="CSGBox3D" parent="." unique_id=859931436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+use_collision = true
+size = Vector3(8, 4, 0.2)
+
+[node name="WallLeft" type="CSGBox3D" parent="." unique_id=1151114956]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 2, 0)
+size = Vector3(8, 4, 0.2)
+
+[node name="AmbientLight" type="OmniLight3D" parent="." unique_id=405136503]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+
+[node name="CenterPiece" type="Node3D" parent="." unique_id=1035947420]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="GlowMesh" type="CSGSphere3D" parent="CenterPiece" unique_id=45477921]
+radius = 0.35
+
+[node name="Panel_1" type="Node3D" parent="." unique_id=96026628]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.85, 1.7, 0)
+
+[node name="PanelMesh" type="CSGBox3D" parent="Panel_1" unique_id=1334876563]
+transform = Transform3D(0.097, 0, 0, 0, 1.2, 0, 0, 0, 2.595, 0, 0, 0)
+
+[node name="PanelLabel" type="Label3D" parent="Panel_1" unique_id=2066266146]
+
+[node name="Panel_2" type="Node3D" parent="." unique_id=1580396585]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.85, 1.7, 0)
+
+[node name="PanelMesh" type="CSGBox3D" parent="Panel_2" unique_id=1051468791]
+transform = Transform3D(0.07695818, 0, 0, 0, 1, 0, 0, 0, 2.1488113, 0, 0, 0)
+
+[node name="PanelLabel" type="Label3D" parent="Panel_2" unique_id=192342497]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="Panel_3" type="Node3D" parent="." unique_id=1301220709]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 1.7, -3.85)
+
+[node name="PanelMesh" type="CSGBox3D" parent="Panel_3" unique_id=1468932985]
+transform = Transform3D(0.07695818, 0, 0, 0, 1, 0, 0, 0, 2.1488113, 0, 0, 0)
+
+[node name="PanelLabel" type="Label3D" parent="Panel_3" unique_id=724128492]
+
+[node name="ExitTrigger" type="Area3D" parent="." unique_id=1358598458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.7232342)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger" unique_id=118853142]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_l2d2h")
+
+[node name="SpawnPoint" type="Marker3D" parent="." unique_id=455915831]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 3)

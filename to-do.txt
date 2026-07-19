@@ -1,0 +1,7 @@
+-> Redo the levels once you've got them working. Very boring levels rn
+
+->Look into redoing the room types with enums. Like right now you have
+  POINTER, INTEGER and so on as strings of room types. Try enums
+
+
+  

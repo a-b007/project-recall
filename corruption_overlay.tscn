@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://qqvpvf1wwc8r"]
+
+[ext_resource type="Shader" uid="uid://bbgwcsu84wofc" path="res://corruption_overlay.gdshader" id="1_ty0w8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3yo2h"]
+shader = ExtResource("1_ty0w8")
+shader_parameter/pixel_size = 3.0
+shader_parameter/vhs_intensity = 1.5000000712500001
+shader_parameter/opacity = 0.5
+shader_parameter/double_vision_split = 0.0050000002375
+
+[node name="CorruptionOverlay" type="CanvasLayer" unique_id=151967742]
+
+[node name="OverlayRect" type="ColorRect" parent="." unique_id=264726313]
+material = SubResource("ShaderMaterial_3yo2h")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

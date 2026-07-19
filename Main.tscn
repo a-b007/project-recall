@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://ne6t87bc3js0"]
+
+[ext_resource type="Script" uid="uid://bb7bpj3fu1nvj" path="res://main.gd" id="1_cm0pq"]
+[ext_resource type="Script" uid="uid://ccom0o8yxhcng" path="res://character_body_3d.gd" id="1_glv2v"]
+[ext_resource type="PackedScene" uid="uid://d26jtajgln6i8" path="res://console.tscn" id="2_r0du0"]
+[ext_resource type="PackedScene" uid="uid://cviq2svfojkn7" path="res://room_base.tscn" id="2_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://qqvpvf1wwc8r" path="res://corruption_overlay.tscn" id="4_fos0i"]
+[ext_resource type="CompressedTexture3D" uid="uid://cabkyocuro5qe" path="res://LUT/18-16bit_edited.png" id="6_3dxm6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uu6xs"]
+radius = 0.37
+height = 1.7
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_fos0i"]
+
+[sub_resource type="Sky" id="Sky_3dxm6"]
+sky_material = SubResource("ProceduralSkyMaterial_fos0i")
+
+[sub_resource type="Environment" id="Environment_lgr22"]
+background_mode = 2
+sky = SubResource("Sky_3dxm6")
+ambient_light_source = 3
+ambient_light_energy = 1.2
+tonemap_mode = 3
+ssao_enabled = true
+ssao_radius = 0.6
+ssao_intensity = 1.0
+sdfgi_enabled = true
+glow_enabled = true
+glow_intensity = 0.8
+glow_bloom = 0.15
+fog_enabled = true
+adjustment_enabled = true
+adjustment_color_correction = ExtResource("6_3dxm6")
+
+[node name="Level" type="Node3D" unique_id=1394768753]
+script = ExtResource("1_cm0pq")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=2041209018]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.053009033, 1.5, 2.4328446)
+script = ExtResource("1_glv2v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player" unique_id=2118631019]
+shape = SubResource("CapsuleShape3D_uu6xs")
+
+[node name="Camera3D" type="Camera3D" parent="Player" unique_id=1680868915]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Console" parent="Player" unique_id=1783081011 instance=ExtResource("2_r0du0")]
+layer = 10
+
+[node name="CorruptionOverlay" parent="Player" unique_id=151967742 instance=ExtResource("4_fos0i")]
+
+[node name="RoomBase" parent="." unique_id=338149412 instance=ExtResource("2_uu6xs")]
+address = "0x04"
+
+[node name="MapCamera" type="Camera3D" parent="." unique_id=471438021]
+transform = Transform3D(1, 0, 0, 0, 0.25881907, 0.9659258, 0, -0.9659258, 0.25881907, 0, 20, 5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1959844253]
+environment = SubResource("Environment_lgr22")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=408098019]
+transform = Transform3D(0.70710677, 0.49999997, -0.49999997, 0, 0.70710677, 0.70710677, 0.70710677, -0.49999997, 0.49999997, 0, 0, 0)
+light_color = Color(0.96143585, 0.9078436, 0.8396035, 1)
+light_energy = 0.483
+shadow_enabled = true
+
+[editable path="Player/Console"]
+[editable path="Player/CorruptionOverlay"]
+[editable path="RoomBase"]
+[editable path="RoomBase/Device/DeviceModel"]

@@ -1,0 +1,171 @@
+[gd_scene format=3 uid="uid://cviq2svfojkn7"]
+
+[ext_resource type="Script" uid="uid://dceetqj0i775p" path="res://room_base.gd" id="1_k3jq5"]
+[ext_resource type="Shader" uid="uid://3jyhj5k0ce1i" path="res://portal_shader.gdshader" id="2_iexj0"]
+[ext_resource type="Texture2D" uid="uid://brfc6i7ee6s5l" path="res://textures/Tiles107_2K-JPG/Tiles107_2K-JPG_Displacement.jpg" id="2_t4afj"]
+[ext_resource type="Texture2D" uid="uid://oap7f3eh8xfd" path="res://textures/Tiles107_2K-JPG/Tiles107_2K-JPG_Roughness.jpg" id="3_ikc70"]
+[ext_resource type="FontFile" uid="uid://cg7ebgiquyk0c" path="res://fonts/karu-extralight.ttf" id="3_t4afj"]
+[ext_resource type="Texture2D" uid="uid://djlay6mxjds0l" path="res://textures/Concrete031_2K-JPG/Concrete031_2K-JPG_Color.jpg" id="4_76mhi"]
+[ext_resource type="Texture2D" uid="uid://bcc3e52g1438a" path="res://textures/Concrete031_2K-JPG/Concrete031_2K-JPG_Roughness.jpg" id="5_jk031"]
+[ext_resource type="PackedScene" uid="uid://pw55f0hm6pkm" path="res://models/scifi_terminal/scene.gltf" id="6_ek5j4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5pr5m"]
+transparency = 1
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.21518216, 0.21518219, 0.21518213, 1)
+albedo_texture = ExtResource("2_t4afj")
+metallic = 1.0
+metallic_texture = ExtResource("3_ikc70")
+roughness_texture = ExtResource("3_ikc70")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_76mhi"]
+transparency = 1
+albedo_color = Color(0.10980392, 0.10980392, 0.13333334, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t4afj"]
+transparency = 1
+albedo_color = Color(0.25994107, 0.2599714, 0.3034588, 1)
+albedo_texture = ExtResource("4_76mhi")
+metallic = 1.0
+metallic_texture = ExtResource("5_jk031")
+roughness_texture = ExtResource("5_jk031")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ikc70"]
+transparency = 1
+albedo_color = Color(0.10980392, 0.10980392, 0.13333334, 1)
+albedo_texture = ExtResource("4_76mhi")
+roughness_texture = ExtResource("5_jk031")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ek5j4"]
+transparency = 1
+albedo_color = Color(0.10980392, 0.10980392, 0.13333334, 1)
+albedo_texture = ExtResource("4_76mhi")
+roughness_texture = ExtResource("5_jk031")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mfgdg"]
+albedo_color = Color(0.10980392, 0.10980392, 0.13333334, 1)
+albedo_texture = ExtResource("4_76mhi")
+metallic = 0.1
+roughness_texture = ExtResource("5_jk031")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k3jq5"]
+size = Vector3(2, 3, 0.5)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iexj0"]
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mfgdg"]
+noise = SubResource("FastNoiseLite_iexj0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfgdg"]
+render_priority = 0
+shader = ExtResource("2_iexj0")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_mfgdg")
+shader_parameter/layers = 8
+shader_parameter/depth_amount = 1.0
+shader_parameter/fade_amount = 1.0
+shader_parameter/angle_fade_start = 0.35
+shader_parameter/angle_fade_end = 0.05
+
+[sub_resource type="QuadMesh" id="QuadMesh_t4afj"]
+material = SubResource("ShaderMaterial_mfgdg")
+size = Vector2(2, 3)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iexj0"]
+radius = 2.0
+
+[node name="RoomBase" type="Node3D" unique_id=338149412]
+script = ExtResource("1_k3jq5")
+
+[node name="Floor" type="CSGBox3D" parent="." unique_id=567368462]
+use_collision = true
+size = Vector3(8, 0.2, 8)
+material = SubResource("StandardMaterial3D_5pr5m")
+
+[node name="Ceiling" type="CSGBox3D" parent="." unique_id=1520904505]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+use_collision = true
+size = Vector3(8, 0.2, 8)
+material = SubResource("StandardMaterial3D_76mhi")
+
+[node name="WallRight" type="CSGBox3D" parent="." unique_id=2039947354]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 2, 0)
+use_collision = true
+size = Vector3(8, 4.2, 0.2)
+material = SubResource("StandardMaterial3D_t4afj")
+
+[node name="WallLeft" type="CSGBox3D" parent="." unique_id=1226504271]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -4, 2, 0)
+use_collision = true
+size = Vector3(8, 4.2, 0.2)
+material = SubResource("StandardMaterial3D_ikc70")
+
+[node name="WallBack" type="CSGBox3D" parent="." unique_id=725629023]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -4)
+use_collision = true
+size = Vector3(8, 4.2, 0.2)
+material = SubResource("StandardMaterial3D_ek5j4")
+
+[node name="WallFront" type="CSGBox3D" parent="." unique_id=1060242240]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 4)
+use_collision = true
+size = Vector3(8, 4.2, 0.2)
+material = SubResource("StandardMaterial3D_mfgdg")
+
+[node name="AddressLabel" type="Label3D" parent="." unique_id=683865348]
+font = ExtResource("3_t4afj")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1350257350]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 2.5, 0)
+light_energy = 10.0
+
+[node name="MapLabel" type="Label3D" parent="." unique_id=1572719073]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 4, 0)
+font = ExtResource("3_t4afj")
+
+[node name="ValueLabel" type="Label3D" parent="." unique_id=1827392545]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+font = ExtResource("3_t4afj")
+
+[node name="ExitPortal" type="Area3D" parent="." unique_id=2047827617]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.662436, -3.8609133)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ExitPortal" unique_id=1519859143]
+shape = SubResource("BoxShape3D_k3jq5")
+
+[node name="PortalLabel" type="Label3D" parent="ExitPortal" unique_id=54446286]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+font = ExtResource("3_t4afj")
+
+[node name="PortalMesh" type="MeshInstance3D" parent="ExitPortal" unique_id=1336523984]
+mesh = SubResource("QuadMesh_t4afj")
+
+[node name="DoorMesh" type="MeshInstance3D" parent="ExitPortal" unique_id=1928712190]
+
+[node name="MapValueLabel" type="Label3D" parent="." unique_id=1446841400]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 4, 1.259)
+font = ExtResource("3_t4afj")
+
+[node name="Device" type="Node3D" parent="." unique_id=410066874]
+
+[node name="InteractArea" type="Area3D" parent="Device" unique_id=2145586962]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Device/InteractArea" unique_id=248622754]
+shape = SubResource("SphereShape3D_iexj0")
+
+[node name="InteractLabel" type="Label3D" parent="Device" unique_id=132690989]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+text = "[E]:  Interact"
+font = ExtResource("3_t4afj")
+
+[node name="DeviceModel" parent="Device" unique_id=956589328 instance=ExtResource("6_ek5j4")]
+transform = Transform3D(-0.0040044747, 0, 0.20900905, 0, 0.2554707, 0, -0.35405654, 0, -0.0023639486, 0, 0, 0)
+
+[node name="SpawnPoint" type="Marker3D" parent="." unique_id=1092523301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 3)
+
+[node name="EntryPoint" type="Marker3D" parent="." unique_id=850872191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -2.5)
+
+[editable path="Device/DeviceModel"]
