@@ -13,3 +13,6 @@ func _on_exit_triggered(body: Node3D) -> void:
 	if not body is CharacterBody3D:
 		return
 	get_tree().get_first_node_in_group("level").next_level()
+	
+func _ready() -> void:
+	add_to_group("lore_rooms")

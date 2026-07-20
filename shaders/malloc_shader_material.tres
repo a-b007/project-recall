@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://malloc_room.gdshader" id="1"]
+[ext_resource type="Texture2D" path="res://malloc_gradient_texture.tres" id="2"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1")
+shader_parameter/fresnel_power = 3.0
+shader_parameter/emission_power = 2.0
+shader_parameter/white_lerp = 0.15
+shader_parameter/scroll_speed = 0.15
+shader_parameter/colors_texture = ExtResource("2")

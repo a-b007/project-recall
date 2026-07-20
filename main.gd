@@ -29,7 +29,7 @@ var level_registry : Dictionary = {
 }
 
 const ProceduralLevel = preload("res://levels/level_procedural.gd")
-const PROCEDURAL_START = 11
+const PROCEDURAL_START = 12
 const FINAL_LEVEL = 15
 
 func _ready() -> void:

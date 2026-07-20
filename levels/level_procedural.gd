@@ -14,7 +14,13 @@ func get_rooms() -> Dictionary:
 	var rooms = ProceduralGenerator.generate(_level_num)
 	if rooms.is_empty():
 		return {}
-	start_address = rooms.keys()[0]
+	start_address = ""
+	for addr in rooms:
+		if rooms[addr].get("is_start", false):
+			start_address = addr
+			break
+	if start_address == "":
+		start_address = rooms.keys()[0]  # fallback, shouldn't be reachable
 	return rooms
 
 func _generate_listing(n: int) -> String:

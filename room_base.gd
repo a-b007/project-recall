@@ -1,5 +1,8 @@
 extends Node3D
 
+const MALLOC_MATERIAL := preload("res://malloc_shader_material.tres")
+const MALLOC_MESH_PARTS := ["WallLeft", "WallRight", "WallFront", "WallBack", "Ceiling"]
+
 @export var address: String = "0x00"
 
 var player_in_range: bool = false
@@ -32,7 +35,19 @@ func init_room() -> void:
 	$MapValueLabel.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	$MapValueLabel.visible = false
 	$Device/InteractLabel.visible = false
+	if address in LevelState.malloc_rooms:
+		_apply_malloc_material()
 	refresh_display()
+
+func _apply_malloc_material() -> void:
+	# Temporary allocations get a translucent, scrolling fresnel material on
+	# their walls/ceiling instead of the normal opaque one, so they read as
+	# unstable/provisional at a glance rather than a permanent room. Floor is
+	# left solid so footing stays visually unambiguous.
+	for part_name in MALLOC_MESH_PARTS:
+		var part := get_node_or_null(part_name)
+		if part:
+			part.material = MALLOC_MATERIAL
 	
 func get_spawn_position() -> Vector3:
 	return $SpawnPoint.global_position
@@ -96,18 +111,28 @@ func _on_portal_entered(body : Node3D) -> void:
 	if not body is CharacterBody3D:
 		return
 	var data = LevelState.get_room(address)
-	if data.is_empty() or data.get("type") != "POINTER": 
+	if data.is_empty():
 		return
-	var target = str(data.value)
-	if target in LevelState.rooms and not LevelState.is_unlocked(target):
-		return
-	if address in LevelState.malloc_rooms:
+
+	var is_malloc = address in LevelState.malloc_rooms
+
+	if is_malloc:
+		# Malloc rooms never have a real pointer destination (their "value"
+		# is always "NULL") -- walking through their doorway is the whole
+		# durability mechanic, not a trip somewhere else.
 		var remaining = LevelState.decrement_durability(address)
 		refresh_display()
 		if remaining <= 0:
 			_collapse()
-			return
-			
+		return
+
+	if data.get("type") != "POINTER":
+		return
+
+	var target = str(data.value)
+	if target in LevelState.rooms and not LevelState.is_unlocked(target):
+		return
+
 	get_tree().get_first_node_in_group("level").teleport_player(str(data.value))
 	
 	

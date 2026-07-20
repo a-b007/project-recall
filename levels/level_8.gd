@@ -5,7 +5,7 @@ func _init() -> void:
 	level_name = "Core Index"
 	start_address = "0x04"
 	malloc_budget = 1
-	program_listing = "CORE MEMORY INDEX\n[partial corruption — some lines unreadable]\n\nif (gate):\n    left  = process_L(5)    // L: x * 2\n    right = process_R(???)  // source corrupted\nfinal = left + right"
+	program_listing = "CORE MEMORY INDEX\n[partial corruption — some lines unreadable]\n\nif (gate):\n    left  = process_L(5)     // L: x * 2\n    right = process_R(???)   // backing memory freed — reallocate\nfinal = left + right"
 
 func get_rooms() -> Dictionary:
 	return {
@@ -27,16 +27,11 @@ func get_rooms() -> Dictionary:
 			"position": Vector3(-15, 0, 30)
 		},
 		"0x10": {
-			"type": "POINTER", "value": "0xFF", "expected": "0x14",
-			"protected": false, "note": "entry to right branch",
+			"type": "POINTER", "value": "0xFF", "expected": "0xM00",
+			"protected": false,
+			"note": "entry to right branch — original backing storage was freed. malloc a replacement and point here.",
 			"locked_by": {"address": "0x04", "value": false},
 			"position": Vector3(15, 0, 15)
-		},
-		"0x14": {
-			"type": "INTEGER", "value": 0, "expected": 19,
-			"protected": false,
-			"note": "process_R result — infer from final=29 and left=10",
-			"position": Vector3(15, 0, 30)
 		},
 		"0x18": {
 			"type": "POINTER", "value": "0x04", "expected": "NULL",
@@ -46,7 +41,7 @@ func get_rooms() -> Dictionary:
 		},
 		"0x30": {
 			"type": "INTEGER", "value": 0, "expected": 29,
-			"protected": false, "note": "final = left + right",
+			"protected": false, "note": "final = left + right — infer right from final=29, left=10",
 			"position": Vector3(0, 0, 60)
 		}
 	}

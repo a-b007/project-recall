@@ -53,8 +53,16 @@ func _on_input_line_text_submitted(text: String):
 	history.append(text)
 	history_index = history.size()
 	print_line("> " + text)
-	parse_command(text.strip_edges().to_lower())
+	parse_command(text.strip_edges())
 	$Panel/InputLine.clear()
+
+func _normalize_address(raw: String) -> String:
+	# Addresses are stored as "0x" + two uppercase hex digits (or "0xM01" for
+	# malloc rooms). Whatever case the player typed, coerce it to match --
+	# otherwise "write 0xbb" can never satisfy an expected value of "0xBB".
+	if raw.to_lower().begins_with("0x") and raw.length() > 2:
+		return "0x" + raw.substr(2).to_upper()
+	return raw
 
 func print_line(text: String):
 	$Panel/OutputLog.append_text(text + "\n")
@@ -63,7 +71,7 @@ func print_line(text: String):
 
 func parse_command(input: String):
 	var parts = input.split(" ")
-	var cmd = parts[0]
+	var cmd = parts[0].to_lower()
 	
 	match cmd:
 		"help":
@@ -110,6 +118,12 @@ func parse_command(input: String):
 			
 			elif val.is_valid_int():
 				val = val.to_int()
+
+			elif val.to_lower().begins_with("0x"):
+				val = _normalize_address(val)
+
+			elif val.to_lower() == "null":
+				val = "NULL"
 				
 			if LevelState.write_value(addr, val):
 				print_line("wrote " + str(val) + " to " + addr)
@@ -163,7 +177,7 @@ func parse_command(input: String):
 			if parts.size() < 2:
 				print_line("usage: call <address>")
 				return
-			var target = parts[1]
+			var target = _normalize_address(parts[1])
 			if target not in LevelState.rooms:
 				print_line("SEGFAULT: " + target + " is not a valid address")
 				return
@@ -195,9 +209,10 @@ func parse_command(input: String):
 				print_line("error: malloc budget exhausted")
 				print_line("  remaining: 0")
 				return
-			var player_pos = get_tree().get_first_node_in_group("level") \
-				.get_node("Player").global_position
-			var addr = LevelState.malloc_room(player_pos)
+			var player_node = get_tree().get_first_node_in_group("level").get_node("Player")
+			var player_pos = player_node.global_position
+			var facing = -player_node.global_transform.basis.z
+			var addr = LevelState.malloc_room(player_pos, facing)
 			if addr == "":
 				print_line("error: malloc failed")
 				return
@@ -210,7 +225,7 @@ func parse_command(input: String):
 			if parts.size() < 2:
 				print_line("usage: free <address>")
 				return
-			var addr = parts[1]
+			var addr = _normalize_address(parts[1])
 			if LevelState.free_room(addr):
 				for room in get_tree().get_nodes_in_group("rooms"):
 					if room.address == addr:
@@ -252,7 +267,7 @@ func parse_command(input: String):
 			if parts.size() < 2:
 				print_line("dev commands: dev goto <level>")
 				return
-			match parts[1]:
+			match parts[1].to_lower():
 				"goto":
 					if parts.size() < 3:
 						print_line("usage: dev goto <level_number>")
@@ -262,10 +277,13 @@ func parse_command(input: String):
 						return
 					var n = parts[2].to_int()
 					var level_node = get_tree().get_first_node_in_group("level")
-					if n not in level_node.level_registry:
+					var is_registered = n in level_node.level_registry
+					var is_procedural = n >= level_node.PROCEDURAL_START and n < level_node.FINAL_LEVEL
+					if not is_registered and not is_procedural:
 						print_line("error: level " + str(n) + " not registered")
 						return
 					print_line("dev: jumping to level " + str(n))
+					level_node.current_level_number = n
 					level_node.load_level(n)
 					
 				"truth":
